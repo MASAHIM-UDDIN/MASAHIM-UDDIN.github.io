@@ -283,9 +283,9 @@ section {
 }
 
 .brand-logo {
-  font-size: 1.25rem;
+  font-size: 1.125rem;
   font-weight: 800;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.1em;
   color: var(--text-main);
   display: flex;
   align-items: center;
