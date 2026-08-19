@@ -1647,6 +1647,63 @@ textarea.form-control {
 
 @media (max-width: 768px) {
   .nav-links {
+@media (max-width: 768px) {
+  section {
+    padding: 65px 0;
+  }
+
+  .container {
+    padding: 0 18px;
+  }
+
+  .brand-logo {
+    font-size: 0.9375rem;
+    letter-spacing: 0.08em;
+  }
+
+  .hero-section {
+    padding-top: calc(var(--nav-height) + 20px);
+    padding-bottom: 50px;
+    min-height: auto;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.75rem;
+    padding: 5px 12px;
+    margin-bottom: 16px;
+  }
+
+  .hero-title {
+    font-size: clamp(1.4rem, 5.5vw, 2.1rem);
+    line-height: 1.35;
+    margin-bottom: 18px;
+  }
+
+  .hero-subtitle {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 28px;
+  }
+
+  .hero-ctas {
+    flex-direction: column;
+    width: 100%;
+    gap: 12px;
+  }
+
+  .hero-ctas .btn {
+    width: 100%;
+    padding: 14px 20px;
+  }
+
+  .hero-tech-bar {
+    justify-content: center;
+    flex-wrap: wrap;
+    font-size: 0.8125rem;
+    gap: 8px;
+  }
+
+  .nav-links {
     position: fixed;
     top: 0;
     right: -100%;
@@ -1671,10 +1728,65 @@ textarea.form-control {
     display: block;
   }
 
+  .code-window {
+    transform: none !important;
+    border-radius: var(--radius-md);
+  }
+
+  .window-body {
+    padding: 16px 14px;
+    font-size: 0.78125rem;
+    line-height: 1.6;
+  }
+
+  .code-line {
+    gap: 10px;
+  }
+
+  .line-num {
+    min-width: 18px;
+  }
+
+  .terminal-block {
+    padding: 10px 12px;
+    font-size: 0.75rem;
+    overflow-x: auto;
+  }
+
+  .float-card {
+    display: none;
+  }
+
+  .about-card, .skill-category-card, .project-card, .approach-card {
+    padding: 24px 20px;
+  }
+
+  .projects-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .project-visual-preview {
+    height: 160px;
+  }
+
   .github-banner {
     flex-direction: column;
-    align-items: flex-start;
-    padding: 36px 24px;
+    align-items: center;
+    text-align: center;
+    padding: 36px 20px;
+  }
+
+  .github-banner-title {
+    font-size: 1.5rem;
+  }
+
+  .github-banner-desc {
+    font-size: 0.9375rem;
+  }
+
+  .github-banner-btn {
+    width: 100%;
   }
 
   .approach-timeline {
@@ -1685,18 +1797,29 @@ textarea.form-control {
     grid-template-columns: 1fr;
   }
 
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-form {
+    padding: 30px 20px;
+  }
+
   .footer-content {
     flex-direction: column;
     align-items: flex-start;
     gap: 24px;
   }
+}
 
-  .code-window {
-    transform: none !important;
+@media (max-width: 480px) {
+  .brand-logo {
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
   }
-  
-  .float-card {
-    display: none; /* Hide floating cards on small screens to prevent overflow */
+
+  .hero-title {
+    font-size: 1.3rem;
   }
 }
 

@@ -263,7 +263,7 @@ function initCodeWindowInteractions() {
 }
 
 /* --------------------------------------------------------------------------
-   8. TYPEWRITER SWAPPER ANIMATION (MASAHIM UDDIN <-> PYTHON DEVELOPER)
+   8. DYNAMIC FADE & SLIDE TEXT SWAPPER (MASAHIM UDDIN <-> PYTHON DEVELOPER)
    -------------------------------------------------------------------------- */
 function initTypewriterSwapper() {
   const target = document.getElementById('typewriterSwapper');
@@ -271,39 +271,30 @@ function initTypewriterSwapper() {
 
   const phrases = ["Masahim Uddin", "Python Developer"];
   let phraseIndex = 0;
-  let text = phrases[0];
-  let isDeleting = false;
 
-  function tick() {
-    const fullText = phrases[phraseIndex];
+  // Add smooth transition properties directly to target element
+  target.style.transition = 'opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.45s cubic-bezier(0.16, 1, 0.3, 1)';
+  target.style.display = 'inline-block';
 
-    if (isDeleting) {
-      text = fullText.substring(0, text.length - 1);
-    } else {
-      text = fullText.substring(0, text.length + 1);
-    }
+  function swapText() {
+    // 1. Fade out and slide up
+    target.style.opacity = '0';
+    target.style.transform = 'translateY(-8px)';
 
-    target.textContent = text;
-
-    let delta = isDeleting ? 45 : 90;
-
-    if (!isDeleting && text === fullText) {
-      // Pause at full phrase before erasing
-      delta = 2200;
-      isDeleting = true;
-    } else if (isDeleting && text === '') {
-      // Switch to next phrase after erasing complete
-      isDeleting = false;
+    setTimeout(() => {
+      // 2. Change text while invisible
       phraseIndex = (phraseIndex + 1) % phrases.length;
-      delta = 350;
-    }
+      target.textContent = phrases[phraseIndex];
+      target.style.transform = 'translateY(8px)';
 
-    setTimeout(tick, delta);
+      // 3. Fade in and slide to resting position
+      setTimeout(() => {
+        target.style.opacity = '1';
+        target.style.transform = 'translateY(0)';
+      }, 50);
+    }, 450);
   }
 
-  // Start deleting after initial 2 second pause
-  setTimeout(() => {
-    isDeleting = true;
-    tick();
-  }, 2200);
+  // Swap every 3 seconds continuously
+  setInterval(swapText, 3000);
 }
