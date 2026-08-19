@@ -1646,8 +1646,6 @@ textarea.form-control {
 }
 
 @media (max-width: 768px) {
-  .nav-links {
-@media (max-width: 768px) {
   section {
     padding: 65px 0;
   }
