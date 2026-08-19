@@ -308,6 +308,13 @@ section {
   display: flex;
   align-items: center;
   gap: 8px;
+  transition: all var(--transition-fast);
+}
+
+.brand-logo:hover {
+  letter-spacing: 0.13em;
+  color: #ffffff;
+  text-shadow: 0 0 14px rgba(255, 90, 31, 0.45);
 }
 
 .brand-dot {
@@ -315,6 +322,13 @@ section {
   height: 8px;
   border-radius: 50%;
   background: var(--accent-gradient);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  animation: pulse-dot 2.5s infinite;
+}
+
+.brand-logo:hover .brand-dot {
+  transform: scale(1.4);
+  box-shadow: 0 0 12px var(--accent-orange);
 }
 
 .nav-links {
@@ -336,15 +350,21 @@ section {
   color: var(--text-main);
 }
 
-.nav-link.active::after {
+.nav-link::after {
   content: '';
   position: absolute;
   bottom: -6px;
   left: 0;
-  width: 100%;
+  width: 0;
   height: 2px;
   background: var(--accent-gradient);
   border-radius: 2px;
+  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+  width: 100%;
 }
 
 .nav-actions {
@@ -516,6 +536,24 @@ section {
   cursor: pointer;
   text-decoration: none;
   border: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+  transition: left 0.6s ease;
+  pointer-events: none;
+}
+
+.btn:hover::before {
+  left: 100%;
 }
 
 .btn-primary {
@@ -526,8 +564,8 @@ section {
 
 .btn-primary:hover {
   background: #ff6c38;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 28px rgba(255, 90, 31, 0.4);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 8px 30px rgba(255, 90, 31, 0.45);
 }
 
 .btn-secondary {
@@ -540,7 +578,7 @@ section {
 .btn-secondary:hover {
   background: rgba(255, 255, 255, 0.09);
   border-color: var(--border-highlight);
-  transform: translateY(-2px);
+  transform: translateY(-3px) scale(1.02);
   color: #ffffff;
 }
 
@@ -567,11 +605,37 @@ section {
 .tech-item {
   color: var(--text-muted);
   font-weight: 500;
+  transition: all var(--transition-fast);
+  display: inline-block;
+  cursor: default;
+}
+
+.tech-item:hover {
+  color: var(--accent-orange);
+  transform: translateY(-2px) scale(1.1);
+  text-shadow: 0 0 12px rgba(255, 90, 31, 0.5);
 }
 
 .tech-separator {
   color: var(--accent-purple);
   opacity: 0.7;
+}
+
+/* Terminal Cursor */
+.terminal-cursor {
+  display: inline-block;
+  width: 7px;
+  height: 13px;
+  background: var(--accent-orange);
+  margin-left: 4px;
+  vertical-align: middle;
+  box-shadow: 0 0 6px var(--accent-orange);
+  animation: blinkCursor 1s step-end infinite;
+}
+
+@keyframes blinkCursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
 }
 
 /* --------------------------------------------------------------------------
@@ -1468,6 +1532,17 @@ textarea.form-control {
   font-weight: 800;
   letter-spacing: 0.12em;
   color: var(--text-main);
+  transition: all var(--transition-fast);
+  display: inline-block;
+}
+
+.footer-brand:hover {
+  letter-spacing: 0.15em;
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  transform: translateY(-1px);
 }
 
 .footer-sub {
