@@ -271,36 +271,39 @@ function initTypewriterSwapper() {
 
   const phrases = ["Masahim Uddin", "Python Developer"];
   let phraseIndex = 0;
-  let charIndex = phrases[0].length;
+  let text = phrases[0];
   let isDeleting = false;
 
-  function type() {
-    const currentPhrase = phrases[phraseIndex];
+  function tick() {
+    const fullText = phrases[phraseIndex];
 
     if (isDeleting) {
-      target.textContent = currentPhrase.substring(0, charIndex - 1);
-      charIndex--;
+      text = fullText.substring(0, text.length - 1);
     } else {
-      target.textContent = currentPhrase.substring(0, charIndex + 1);
-      charIndex++;
+      text = fullText.substring(0, text.length + 1);
     }
 
-    let delay = isDeleting ? 45 : 85;
+    target.textContent = text;
 
-    if (!isDeleting && charIndex === currentPhrase.length) {
+    let delta = isDeleting ? 45 : 90;
+
+    if (!isDeleting && text === fullText) {
       // Pause at full phrase before erasing
-      delay = 2200;
+      delta = 2200;
       isDeleting = true;
-    } else if (isDeleting && charIndex <= 0) {
-      // Switch to next phrase after erasing
+    } else if (isDeleting && text === '') {
+      // Switch to next phrase after erasing complete
       isDeleting = false;
       phraseIndex = (phraseIndex + 1) % phrases.length;
-      delay = 300;
+      delta = 350;
     }
 
-    setTimeout(type, delay);
+    setTimeout(tick, delta);
   }
 
-  // Start initial typewriter loop after 1 second
-  setTimeout(type, 1000);
+  // Start deleting after initial 2 second pause
+  setTimeout(() => {
+    isDeleting = true;
+    tick();
+  }, 2200);
 }
