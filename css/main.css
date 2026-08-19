@@ -466,20 +466,17 @@ section {
   font-weight: 800;
   color: var(--text-main);
   margin-bottom: 8px;
-  opacity: 0;
-  transform: translateY(22px);
-  filter: blur(6px);
-  animation: heroTextEntrance 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
+  animation: heroTextEntrance 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
   transition: transform var(--transition-fast);
 }
 
 .typing-cursor {
   display: inline-block;
   color: var(--accent-orange);
-  font-weight: 500;
+  font-weight: 600;
   margin-left: 2px;
   animation: blinkCursor 0.8s step-end infinite;
-  text-shadow: 0 0 8px var(--accent-orange);
+  text-shadow: 0 0 10px var(--accent-orange);
 }
 
 .hero-greeting:hover {
@@ -491,10 +488,7 @@ section {
   font-size: 0.95em;
   font-weight: 700;
   color: rgba(249, 250, 251, 0.88);
-  opacity: 0;
-  transform: translateY(22px);
-  filter: blur(6px);
-  animation: heroTextEntrance 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+  animation: heroTextEntrance 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both;
   transition: transform var(--transition-fast);
 }
 

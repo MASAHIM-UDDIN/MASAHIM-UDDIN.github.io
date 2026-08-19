@@ -10,7 +10,7 @@
  */
 const CONTACT_EMAIL = ""; // e.g. "masahim@example.com"
 
-document.addEventListener('DOMContentLoaded', () => {
+function startApp() {
   initNavbar();
   initMobileMenu();
   initScrollReveals();
@@ -19,7 +19,13 @@ document.addEventListener('DOMContentLoaded', () => {
   initContactForm();
   initCodeWindowInteractions();
   initTypewriterSwapper();
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', startApp);
+} else {
+  startApp();
+}
 
 /* --------------------------------------------------------------------------
    1. STICKY NAVBAR ON SCROLL
@@ -263,9 +269,6 @@ function initTypewriterSwapper() {
   const target = document.getElementById('typewriterSwapper');
   if (!target) return;
 
-  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (prefersReduced) return;
-
   const phrases = ["Masahim Uddin", "Python Developer"];
   let phraseIndex = 0;
   let charIndex = phrases[0].length;
@@ -282,22 +285,22 @@ function initTypewriterSwapper() {
       charIndex++;
     }
 
-    let delay = isDeleting ? 40 : 80;
+    let delay = isDeleting ? 45 : 85;
 
     if (!isDeleting && charIndex === currentPhrase.length) {
       // Pause at full phrase before erasing
-      delay = 2400;
+      delay = 2200;
       isDeleting = true;
-    } else if (isDeleting && charIndex === 0) {
+    } else if (isDeleting && charIndex <= 0) {
       // Switch to next phrase after erasing
       isDeleting = false;
       phraseIndex = (phraseIndex + 1) % phrases.length;
-      delay = 350;
+      delay = 300;
     }
 
     setTimeout(type, delay);
   }
 
-  // Start looping typewriter animation
-  setTimeout(type, 2200);
+  // Start initial typewriter loop after 1 second
+  setTimeout(type, 1000);
 }
