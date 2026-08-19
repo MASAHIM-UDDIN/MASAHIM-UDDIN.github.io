@@ -1248,8 +1248,8 @@ section {
    -------------------------------------------------------------------------- */
 .github-banner {
   padding: 60px 48px;
-  background: radial-gradient(circle at top right, rgba(139, 92, 246, 0.2), transparent 60%),
-              radial-gradient(circle at bottom left, rgba(255, 90, 31, 0.2), transparent 60%),
+  background: radial-gradient(circle at top right, rgba(139, 92, 246, 0.2), transparent 65%),
+              radial-gradient(circle at bottom left, rgba(255, 90, 31, 0.2), transparent 65%),
               linear-gradient(145deg, rgba(15, 20, 32, 0.9) 0%, rgba(20, 26, 42, 0.8) 100%);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
@@ -1264,14 +1264,55 @@ section {
   overflow: hidden;
 }
 
+.github-banner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, #ff5a1f, #c084fc, #8b5cf6, #ff5a1f);
+  background-size: 300% 100%;
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+  animation: borderFlow 4s linear infinite;
+}
+
 .github-banner:hover {
-  border-color: rgba(255, 90, 31, 0.4);
-  transform: translateY(-4px);
-  box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.7), 0 0 35px rgba(255, 90, 31, 0.2);
+  background: radial-gradient(circle at top right, rgba(139, 92, 246, 0.35), transparent 70%),
+              radial-gradient(circle at bottom left, rgba(255, 90, 31, 0.35), transparent 70%),
+              linear-gradient(145deg, rgba(22, 29, 46, 0.95) 0%, rgba(28, 36, 56, 0.88) 100%);
+  border-color: rgba(255, 90, 31, 0.45);
+  transform: translateY(-8px) scale(1.015);
+  box-shadow: 0 24px 50px -10px rgba(0, 0, 0, 0.8), 0 0 45px rgba(255, 90, 31, 0.25), 0 0 30px rgba(139, 92, 246, 0.25);
+}
+
+.github-banner:hover::before {
+  opacity: 1;
+}
+
+.github-watermark-icon {
+  position: absolute;
+  right: -30px;
+  bottom: -30px;
+  opacity: 0.05;
+  color: var(--text-main);
+  pointer-events: none;
+  transition: all var(--transition-slow);
+  z-index: 1;
+}
+
+.github-banner:hover .github-watermark-icon {
+  opacity: 0.14;
+  transform: scale(1.15) rotate(12deg);
+  color: var(--accent-orange);
+  filter: drop-shadow(0 0 20px rgba(255, 90, 31, 0.4));
 }
 
 .github-banner-content {
   max-width: 600px;
+  position: relative;
+  z-index: 2;
 }
 
 .github-banner-title {
@@ -1279,12 +1320,35 @@ section {
   font-weight: 700;
   color: var(--text-main);
   margin-bottom: 12px;
+  transition: all var(--transition-normal);
+}
+
+.github-banner:hover .github-banner-title {
+  background: linear-gradient(135deg, #ffffff 0%, #ff5a1f 50%, #c084fc 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientFlow 5s ease infinite;
+  transform: translateX(4px);
 }
 
 .github-banner-desc {
   font-size: 1.0625rem;
   color: var(--text-muted);
   line-height: 1.7;
+}
+
+.github-banner-btn {
+  position: relative;
+  z-index: 2;
+  transition: all var(--transition-fast) !important;
+}
+
+.github-banner:hover .github-banner-btn {
+  transform: translateY(-3px) scale(1.05);
+  background: #ff6c38;
+  box-shadow: 0 8px 30px rgba(255, 90, 31, 0.5);
 }
 
 /* --------------------------------------------------------------------------
