@@ -473,6 +473,15 @@ section {
   transition: transform var(--transition-fast);
 }
 
+.typing-cursor {
+  display: inline-block;
+  color: var(--accent-orange);
+  font-weight: 500;
+  margin-left: 2px;
+  animation: blinkCursor 0.8s step-end infinite;
+  text-shadow: 0 0 8px var(--accent-orange);
+}
+
 .hero-greeting:hover {
   transform: translateY(-2px);
 }

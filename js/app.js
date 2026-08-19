@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initActiveNavHighlight();
   initContactForm();
   initCodeWindowInteractions();
+  initTypewriterSwapper();
 });
 
 /* --------------------------------------------------------------------------
@@ -253,4 +254,50 @@ function initCodeWindowInteractions() {
       line.style.backgroundColor = 'transparent';
     });
   });
+}
+
+/* --------------------------------------------------------------------------
+   8. TYPEWRITER SWAPPER ANIMATION (MASAHIM UDDIN <-> PYTHON DEVELOPER)
+   -------------------------------------------------------------------------- */
+function initTypewriterSwapper() {
+  const target = document.getElementById('typewriterSwapper');
+  if (!target) return;
+
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReduced) return;
+
+  const phrases = ["Masahim Uddin", "Python Developer"];
+  let phraseIndex = 0;
+  let charIndex = phrases[0].length;
+  let isDeleting = false;
+
+  function type() {
+    const currentPhrase = phrases[phraseIndex];
+
+    if (isDeleting) {
+      target.textContent = currentPhrase.substring(0, charIndex - 1);
+      charIndex--;
+    } else {
+      target.textContent = currentPhrase.substring(0, charIndex + 1);
+      charIndex++;
+    }
+
+    let delay = isDeleting ? 40 : 80;
+
+    if (!isDeleting && charIndex === currentPhrase.length) {
+      // Pause at full phrase before erasing
+      delay = 2400;
+      isDeleting = true;
+    } else if (isDeleting && charIndex === 0) {
+      // Switch to next phrase after erasing
+      isDeleting = false;
+      phraseIndex = (phraseIndex + 1) % phrases.length;
+      delay = 350;
+    }
+
+    setTimeout(type, delay);
+  }
+
+  // Start looping typewriter animation
+  setTimeout(type, 2200);
 }
