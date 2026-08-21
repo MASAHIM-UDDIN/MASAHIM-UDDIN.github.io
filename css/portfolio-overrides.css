@@ -1,28 +1,36 @@
 /* Portfolio presentation overrides: hero + compact experience card */
 
+/* HERO: show the name first, then the role on its own line. */
 .hero-title .hero-greeting {
   display: block !important;
   visibility: visible !important;
   opacity: 1 !important;
+  font-size: 1.05em !important;
+  margin-bottom: 10px !important;
 }
 
 .hero-title .hero-main-line {
   display: block !important;
   visibility: visible !important;
   opacity: 1 !important;
-  font-size: 0 !important;
+  font-size: 0.9em !important;
+  font-weight: 700 !important;
+  line-height: 1.25 !important;
+  color: rgba(249, 250, 251, 0.92) !important;
 }
 
 .hero-title .hero-main-line::before {
-  content: "I am a Python Developer.";
-  display: block;
-  font-size: clamp(2rem, 4vw, 3.35rem);
-  font-weight: 700;
-  line-height: 1.2;
-  letter-spacing: -0.025em;
-  color: rgba(249, 250, 251, 0.92);
+  content: none !important;
 }
 
+.hero-title .hero-main-line .gradient-text {
+  display: inline-block !important;
+  font-size: 1em !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Compact Professional Experience card. */
 #experience .experience-card-reference {
   padding: 30px 34px 28px !important;
 }
@@ -84,6 +92,10 @@
 }
 
 @media (max-width: 600px) {
+  .hero-title .hero-main-line {
+    font-size: 0.88em !important;
+  }
+
   #experience .experience-card-reference {
     padding: 22px 16px 20px !important;
   }
