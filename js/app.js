@@ -222,36 +222,179 @@ function showContactReturnStatus() {
 }
 
 /* --------------------------------------------------------------------------
-   EXPERIENCE — concrete responsibilities, without invented metrics
+   EXPERIENCE — styled TGT Nexus role card
    -------------------------------------------------------------------------- */
 function initExperienceDetails() {
   const body = document.querySelector('#experience .experience-body');
-  if (!body) return;
+  const company = document.querySelector('#experience .experience-company');
+  const card = document.querySelector('#experience .experience-card');
+  if (!body || !company || !card) return;
 
   body.innerHTML = `
-    <p class="experience-summary">
-      Working as a Python Developer at TGT Nexus, building and maintaining practical software solutions across backend, automation, and web application workflows.
-    </p>
+    <div class="experience-summary-wrap">
+      <p class="experience-summary">
+        Working as a Python Developer at TGT Nexus, building and maintaining practical software solutions across backend, automation, and web application workflows.
+      </p>
+      <span class="experience-stack-label">Core responsibilities</span>
+    </div>
     <ul class="experience-list">
-      <li>Develop and maintain Python-based application logic and backend functionality.</li>
-      <li>Build and integrate REST APIs and connect application workflows with external services and data sources.</li>
-      <li>Create automation scripts and data-processing workflows to reduce repetitive manual work.</li>
-      <li>Work with SQL databases, data handling, and application-level database integration.</li>
-      <li>Implement and troubleshoot frontend/backend features using JavaScript, HTML, CSS, and PHP when required by the project.</li>
-      <li>Use Git and GitHub for version control, collaboration, code review, and production changes.</li>
-      <li>Debug existing systems, resolve application issues, and improve maintainability and reliability of production code.</li>
+      <li><span class="experience-index">01</span><span>Develop and maintain Python-based application logic and backend functionality.</span></li>
+      <li><span class="experience-index">02</span><span>Build and integrate REST APIs and connect application workflows with external services and data sources.</span></li>
+      <li><span class="experience-index">03</span><span>Create automation scripts and data-processing workflows to reduce repetitive manual work.</span></li>
+      <li><span class="experience-index">04</span><span>Work with SQL databases, data handling, and application-level database integration.</span></li>
+      <li><span class="experience-index">05</span><span>Implement and troubleshoot frontend/backend features using JavaScript, HTML, CSS, and PHP when required by the project.</span></li>
+      <li><span class="experience-index">06</span><span>Use Git and GitHub for version control, collaboration, code review, and production changes.</span></li>
+      <li><span class="experience-index">07</span><span>Debug existing systems, resolve application issues, and improve maintainability and reliability of production code.</span></li>
     </ul>
   `;
+
+  if (!company.querySelector('.tgt-nexus-logo')) {
+    const logo = document.createElement('img');
+    logo.className = 'tgt-nexus-logo';
+    logo.src = 'footer-logo.png';
+    logo.alt = 'TGT Nexus';
+    logo.width = 42;
+    logo.height = 42;
+    logo.loading = 'lazy';
+    logo.decoding = 'async';
+    logo.addEventListener('error', () => logo.remove());
+    company.prepend(logo);
+  }
+
+  card.classList.add('experience-card-enhanced');
 
   const styleId = 'experience-inline-styles';
   if (document.getElementById(styleId)) return;
   const style = document.createElement('style');
   style.id = styleId;
   style.textContent = `
-    .experience-summary { margin: 0 0 20px; color: var(--text-muted); line-height: 1.75; }
-    .experience-list { margin: 0; padding-left: 1.2rem; display: grid; gap: 12px; color: var(--text-muted); }
-    .experience-list li { position: relative; padding-left: 4px; line-height: 1.65; }
-    .experience-list li::marker { color: var(--accent-orange); }
+    #experience .experience-card-enhanced {
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 8% 10%, rgba(255, 90, 31, 0.10), transparent 30%),
+        radial-gradient(circle at 95% 88%, rgba(139, 92, 246, 0.09), transparent 32%),
+        linear-gradient(145deg, rgba(15, 20, 32, 0.94), rgba(9, 12, 19, 0.88));
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    }
+    #experience .experience-card-enhanced::before {
+      content: '';
+      position: absolute;
+      inset: 0 0 auto;
+      height: 1px;
+      background: linear-gradient(90deg, #ff5a1f, rgba(216, 180, 254, 0.7), #8b5cf6);
+      opacity: 0.85;
+    }
+    #experience .experience-content { position: relative; z-index: 2; }
+    #experience .experience-header { align-items: flex-start; gap: 24px; }
+    #experience .experience-role { letter-spacing: -0.025em; }
+    #experience .experience-company {
+      display: inline-flex;
+      align-items: center;
+      gap: 11px;
+      margin-top: 9px;
+    }
+    #experience .tgt-nexus-logo {
+      width: 42px;
+      height: 42px;
+      object-fit: contain;
+      border-radius: 11px;
+      padding: 7px;
+      background: rgba(255, 255, 255, 0.045);
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+      flex: 0 0 auto;
+    }
+    #experience .experience-company::after {
+      content: 'TGT Nexus';
+      display: none;
+    }
+    #experience .experience-body {
+      margin-top: 28px;
+      padding-top: 26px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    #experience .experience-summary-wrap {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 18px;
+    }
+    #experience .experience-summary {
+      margin: 0;
+      max-width: 860px;
+      color: var(--text-muted);
+      line-height: 1.75;
+      font-size: 1rem;
+    }
+    #experience .experience-stack-label {
+      white-space: nowrap;
+      padding: 7px 11px;
+      border: 1px solid rgba(139, 92, 246, 0.22);
+      background: rgba(139, 92, 246, 0.07);
+      border-radius: 999px;
+      color: #c4b5fd;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    #experience .experience-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    #experience .experience-list li {
+      display: grid;
+      grid-template-columns: 36px 1fr;
+      gap: 12px;
+      align-items: start;
+      min-height: 82px;
+      padding: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 13px;
+      background: rgba(255, 255, 255, 0.025);
+      color: var(--text-muted);
+      line-height: 1.6;
+      transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+    }
+    #experience .experience-list li:hover {
+      transform: translateY(-3px);
+      border-color: rgba(255, 90, 31, 0.26);
+      background: rgba(255, 90, 31, 0.045);
+    }
+    #experience .experience-index {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      border-radius: 9px;
+      background: linear-gradient(135deg, rgba(255, 90, 31, 0.16), rgba(139, 92, 246, 0.16));
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #f9fafb;
+      font-family: var(--font-mono);
+      font-size: 0.63rem;
+      font-weight: 700;
+    }
+    #experience .timeline-dot {
+      box-shadow: 0 0 0 5px rgba(255, 90, 31, 0.08), 0 0 18px rgba(255, 90, 31, 0.35);
+    }
+    @media (max-width: 860px) {
+      #experience .experience-list { grid-template-columns: 1fr; }
+      #experience .experience-summary-wrap { align-items: flex-start; flex-direction: column; }
+    }
+    @media (max-width: 560px) {
+      #experience .experience-header { gap: 16px; }
+      #experience .experience-list li { min-height: auto; }
+      #experience .experience-stack-label { display: none; }
+    }
   `;
   document.head.appendChild(style);
 }
