@@ -1,4 +1,4 @@
-# Masahim Uddin — Personal Portfolio Website
+# Muhammad Masahim Uddin — Personal Portfolio Website
 
 A modern, dark-themed, professional developer portfolio website for **Masahim Uddin** (Python Developer).
 
