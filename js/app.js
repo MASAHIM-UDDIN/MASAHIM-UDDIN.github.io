@@ -107,7 +107,7 @@ function initContactForm() {
     const email = document.getElementById('contactEmail')?.value.trim() || '';
     const message = document.getElementById('contactMessage')?.value.trim() || '';
     if (!name || !email || !message) return showStatus('Please complete all fields before sending.', 'error');
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return showStatus('Please provide a valid email address.', 'error');
+    if (!/^\S+@\S+\.\S+$/.test(email)) return showStatus('Please provide a valid email address.', 'error');
     if (CONTACT_EMAIL) {
       const subject = encodeURIComponent(`Portfolio Contact from ${name}`);
       const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);
@@ -206,7 +206,7 @@ function initSkillsIcons() {
     'Data Handling': ['https://cdn.simpleicons.org/pandas/150458', 'Data Handling'],
     'Git': ['https://cdn.simpleicons.org/git/F05032', 'Git'],
     'GitHub': ['https://cdn.simpleicons.org/github/FFFFFF', 'GitHub'],
-    'VS Code': ['https://cdn.simpleicons.org/visualstudiocode/007ACC', 'VS Code'],
+    'VS Code': ['https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg', 'VS Code'],
     'Linux': ['https://cdn.simpleicons.org/linux/FCC624', 'Linux']
   };
 
