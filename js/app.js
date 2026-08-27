@@ -3,12 +3,7 @@
    Application Logic, Animations, & Interactions
    ========================================================================== */
 
-/**
- * CONFIGURATION: Destination email for portfolio contact form.
- * Replace the string below with your actual contact email address.
- * Do not commit sensitive credentials.
- */
-const CONTACT_EMAIL = ""; // e.g. "masahim@example.com"
+const CONTACT_EMAIL = "";
 
 function startApp() {
   initNavbar();
@@ -19,6 +14,7 @@ function startApp() {
   initContactForm();
   initCodeWindowInteractions();
   initTypewriterSwapper();
+  initExperienceTechStack();
 }
 
 if (document.readyState === 'loading') {
@@ -27,274 +23,167 @@ if (document.readyState === 'loading') {
   startApp();
 }
 
-/* --------------------------------------------------------------------------
-   1. STICKY NAVBAR ON SCROLL
-   -------------------------------------------------------------------------- */
 function initNavbar() {
   const navbar = document.getElementById('navbar');
   if (!navbar) return;
-
-  const handleScroll = () => {
-    if (window.scrollY > 40) {
-      navbar.classList.add('scrolled');
-    } else {
-      navbar.classList.remove('scrolled');
-    }
-  };
-
+  const handleScroll = () => navbar.classList.toggle('scrolled', window.scrollY > 40);
   window.addEventListener('scroll', handleScroll, { passive: true });
-  handleScroll(); // Initial check
+  handleScroll();
 }
 
-/* --------------------------------------------------------------------------
-   2. MOBILE MENU DRAWER
-   -------------------------------------------------------------------------- */
 function initMobileMenu() {
   const mobileToggle = document.getElementById('mobileToggle');
   const navLinks = document.getElementById('navLinks');
   if (!mobileToggle || !navLinks) return;
-
   const toggleMenu = () => {
     const isOpen = navLinks.classList.contains('open');
-    if (isOpen) {
-      navLinks.classList.remove('open');
-      mobileToggle.setAttribute('aria-expanded', 'false');
-      mobileToggle.innerHTML = `
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-        </svg>
-      `;
-    } else {
-      navLinks.classList.add('open');
-      mobileToggle.setAttribute('aria-expanded', 'true');
-      mobileToggle.innerHTML = `
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-        </svg>
-      `;
-    }
+    navLinks.classList.toggle('open', !isOpen);
+    mobileToggle.setAttribute('aria-expanded', String(!isOpen));
+    mobileToggle.innerHTML = isOpen
+      ? '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>'
+      : '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>';
   };
-
   mobileToggle.addEventListener('click', toggleMenu);
-
-  // Close drawer when clicking a navigation link
-  const links = navLinks.querySelectorAll('.nav-link');
-  links.forEach(link => {
-    link.addEventListener('click', () => {
-      if (navLinks.classList.contains('open')) {
-        toggleMenu();
-      }
-    });
-  });
+  navLinks.querySelectorAll('.nav-link').forEach(link => link.addEventListener('click', () => {
+    if (navLinks.classList.contains('open')) toggleMenu();
+  }));
 }
 
-/* --------------------------------------------------------------------------
-   3. SCROLL REVEAL ANIMATIONS (INTERSECTION OBSERVER)
-   -------------------------------------------------------------------------- */
 function initScrollReveals() {
   const reveals = document.querySelectorAll('.reveal-on-scroll');
-  if (reveals.length === 0) return;
-
-  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (prefersReduced) {
+  if (!reveals.length) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     reveals.forEach(el => el.classList.add('is-visible'));
     return;
   }
-
-  const observerOptions = {
-    root: null,
-    rootMargin: '0px 0px -60px 0px',
-    threshold: 0.15
-  };
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('is-visible');
-        observer.unobserve(entry.target); // Reveal once
-      }
-    });
-  }, observerOptions);
-
+  const observer = new IntersectionObserver(entries => entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('is-visible');
+      observer.unobserve(entry.target);
+    }
+  }), { rootMargin: '0px 0px -60px 0px', threshold: 0.15 });
   reveals.forEach(el => observer.observe(el));
 }
 
-/* --------------------------------------------------------------------------
-   4. AMBIENT CURSOR GLOW EFFECT
-   -------------------------------------------------------------------------- */
 function initCursorGlow() {
-  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (prefersReduced) return;
-
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   const orb1 = document.querySelector('.glow-orb-1');
   const orb2 = document.querySelector('.glow-orb-2');
   if (!orb1 || !orb2) return;
-
-  let mouseX = 0;
-  let mouseY = 0;
-  let currentX1 = 0, currentY1 = 0;
-  let currentX2 = 0, currentY2 = 0;
-
-  window.addEventListener('mousemove', (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-  }, { passive: true });
-
-  function animateGlow() {
-    // Smooth lerp following cursor
+  let mouseX = 0, mouseY = 0, currentX1 = 0, currentY1 = 0, currentX2 = 0, currentY2 = 0;
+  window.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; }, { passive: true });
+  const animate = () => {
     currentX1 += (mouseX - currentX1) * 0.03;
     currentY1 += (mouseY - currentY1) * 0.03;
-    
     currentX2 += (mouseX - currentX2) * 0.02;
     currentY2 += (mouseY - currentY2) * 0.02;
-
-    if (orb1) orb1.style.transform = `translate3d(${currentX1 * 0.05}px, ${currentY1 * 0.05}px, 0)`;
-    if (orb2) orb2.style.transform = `translate3d(${-currentX2 * 0.04}px, ${-currentY2 * 0.04}px, 0)`;
-
-    requestAnimationFrame(animateGlow);
-  }
-
-  animateGlow();
+    orb1.style.transform = `translate3d(${currentX1 * 0.05}px, ${currentY1 * 0.05}px, 0)`;
+    orb2.style.transform = `translate3d(${-currentX2 * 0.04}px, ${-currentY2 * 0.04}px, 0)`;
+    requestAnimationFrame(animate);
+  };
+  animate();
 }
 
-/* --------------------------------------------------------------------------
-   5. ACTIVE NAVIGATION HIGHLIGHT ON SCROLL
-   -------------------------------------------------------------------------- */
 function initActiveNavHighlight() {
   const sections = document.querySelectorAll('section[id]');
   const navLinks = document.querySelectorAll('.nav-link');
   if (!sections.length || !navLinks.length) return;
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const id = entry.target.getAttribute('id');
-        navLinks.forEach(link => {
-          if (link.getAttribute('href') === `#${id}`) {
-            link.classList.add('active');
-          } else {
-            link.classList.remove('active');
-          }
-        });
-      }
-    });
-  }, {
-    rootMargin: '-30% 0px -60% 0px'
-  });
-
+  const observer = new IntersectionObserver(entries => entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    const id = entry.target.getAttribute('id');
+    navLinks.forEach(link => link.classList.toggle('active', link.getAttribute('href') === `#${id}`));
+  }), { rootMargin: '-30% 0px -60% 0px' });
   sections.forEach(section => observer.observe(section));
 }
 
-/* --------------------------------------------------------------------------
-   6. CONTACT FORM HANDLING
-   -------------------------------------------------------------------------- */
 function initContactForm() {
   const form = document.getElementById('contactForm');
   const statusDiv = document.getElementById('formStatus');
   if (!form || !statusDiv) return;
-
-  form.addEventListener('submit', (e) => {
+  form.addEventListener('submit', e => {
     e.preventDefault();
-
-    const nameInput = document.getElementById('contactName');
-    const emailInput = document.getElementById('contactEmail');
-    const messageInput = document.getElementById('contactMessage');
-
-    const name = nameInput ? nameInput.value.trim() : '';
-    const email = emailInput ? emailInput.value.trim() : '';
-    const message = messageInput ? messageInput.value.trim() : '';
-
-    if (!name || !email || !message) {
-      showStatus('Please complete all fields before sending.', 'error');
-      return;
-    }
-
-    // Email format validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      showStatus('Please provide a valid email address.', 'error');
-      return;
-    }
-
-    // Check if target contact email is configured
-    if (CONTACT_EMAIL && CONTACT_EMAIL.length > 0) {
-      // Trigger mailto client
+    const name = document.getElementById('contactName')?.value.trim() || '';
+    const email = document.getElementById('contactEmail')?.value.trim() || '';
+    const message = document.getElementById('contactMessage')?.value.trim() || '';
+    if (!name || !email || !message) return showStatus('Please complete all fields before sending.', 'error');
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return showStatus('Please provide a valid email address.', 'error');
+    if (CONTACT_EMAIL) {
       const subject = encodeURIComponent(`Portfolio Contact from ${name}`);
       const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);
       window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
-      
       showStatus(`Thank you, ${name}! Your email client has been opened to send the message.`, 'success');
-      form.reset();
     } else {
-      // Present polite notice that destination email is in config
       showStatus(`Thank you, ${name}! Your message was validated successfully. (Note: To send emails directly, set the CONTACT_EMAIL variable in app.js).`, 'success');
-      form.reset();
     }
+    form.reset();
   });
-
   function showStatus(msg, type) {
     statusDiv.textContent = msg;
     statusDiv.className = `form-status ${type}`;
     statusDiv.style.display = 'block';
-
-    setTimeout(() => {
-      statusDiv.style.display = 'none';
-    }, 6000);
+    setTimeout(() => { statusDiv.style.display = 'none'; }, 6000);
   }
 }
 
-/* --------------------------------------------------------------------------
-   7. INTERACTIVE CODE WINDOW
-   -------------------------------------------------------------------------- */
 function initCodeWindowInteractions() {
   const codeWindow = document.querySelector('.code-window');
   if (!codeWindow) return;
-
-  // Add a clean hover effect to code elements
-  const codeLines = codeWindow.querySelectorAll('.code-line');
-  codeLines.forEach(line => {
-    line.addEventListener('mouseenter', () => {
-      line.style.backgroundColor = 'rgba(255, 255, 255, 0.03)';
-    });
-    line.addEventListener('mouseleave', () => {
-      line.style.backgroundColor = 'transparent';
-    });
+  codeWindow.querySelectorAll('.code-line').forEach(line => {
+    line.addEventListener('mouseenter', () => { line.style.backgroundColor = 'rgba(255, 255, 255, 0.03)'; });
+    line.addEventListener('mouseleave', () => { line.style.backgroundColor = 'transparent'; });
   });
 }
 
-/* --------------------------------------------------------------------------
-   8. DYNAMIC FADE & SLIDE TEXT SWAPPER (MASAHIM UDDIN <-> PYTHON DEVELOPER)
-   -------------------------------------------------------------------------- */
 function initTypewriterSwapper() {
   const target = document.getElementById('typewriterSwapper');
   if (!target) return;
-
-  const phrases = ["Masahim Uddin", "Python Developer"];
+  const phrases = ['Masahim Uddin', 'Python Developer'];
   let phraseIndex = 0;
-
-  // Add smooth transition properties directly to target element
   target.style.transition = 'opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.45s cubic-bezier(0.16, 1, 0.3, 1)';
   target.style.display = 'inline-block';
-
   function swapText() {
-    // 1. Fade out and slide up
     target.style.opacity = '0';
     target.style.transform = 'translateY(-8px)';
-
     setTimeout(() => {
-      // 2. Change text while invisible
       phraseIndex = (phraseIndex + 1) % phrases.length;
       target.textContent = phrases[phraseIndex];
       target.style.transform = 'translateY(8px)';
-
-      // 3. Fade in and slide to resting position
-      setTimeout(() => {
-        target.style.opacity = '1';
-        target.style.transform = 'translateY(0)';
-      }, 50);
+      setTimeout(() => { target.style.opacity = '1'; target.style.transform = 'translateY(0)'; }, 50);
     }, 450);
   }
-
-  // Swap every 3 seconds continuously
   setInterval(swapText, 3000);
+}
+
+function initExperienceTechStack() {
+  const body = document.querySelector('.experience-body');
+  if (!body || body.querySelector('.experience-tech-stack')) return;
+  const style = document.createElement('style');
+  style.textContent = `
+    .experience-tech-stack{margin-top:26px;padding-top:22px;border-top:1px solid var(--border-subtle)}
+    .experience-tech-label{margin-bottom:14px;font-family:var(--font-mono);font-size:.75rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#b58cff}
+    .experience-tech-grid{display:grid;grid-template-columns:repeat(7,minmax(70px,1fr));gap:12px}
+    .experience-tech-item{min-height:84px;padding:10px 6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;background:linear-gradient(145deg,rgba(255,255,255,.045),rgba(15,20,32,.82));border:1px solid var(--border-subtle);border-radius:12px;transition:transform var(--transition-fast),border-color var(--transition-fast),box-shadow var(--transition-fast),background var(--transition-fast)}
+    .experience-tech-item img{width:30px;height:30px;object-fit:contain;transition:transform var(--transition-fast)}
+    .experience-tech-item span{font-size:.72rem;font-weight:600;color:var(--text-muted);line-height:1.2;white-space:nowrap}
+    .experience-tech-item:hover{transform:translateY(-4px);border-color:rgba(139,92,246,.45);background:linear-gradient(145deg,rgba(139,92,246,.12),rgba(255,90,31,.07));box-shadow:0 10px 24px rgba(0,0,0,.35),0 0 22px rgba(139,92,246,.12)}
+    .experience-tech-item:hover img{transform:scale(1.08)}
+    @media(max-width:1024px){.experience-tech-grid{grid-template-columns:repeat(4,minmax(76px,1fr))}}
+    @media(max-width:768px){.experience-tech-grid{grid-template-columns:repeat(4,minmax(64px,1fr));gap:9px}.experience-tech-item{min-height:76px}.experience-tech-item img{width:26px;height:26px}.experience-tech-item span{font-size:.66rem}}
+    @media(max-width:480px){.experience-tech-grid{grid-template-columns:repeat(3,minmax(74px,1fr))}}
+  `;
+  document.head.appendChild(style);
+  const stack = document.createElement('div');
+  stack.className = 'experience-tech-stack';
+  stack.innerHTML = `
+    <div class="experience-tech-label">Languages &amp; Technologies</div>
+    <div class="experience-tech-grid">
+      <div class="experience-tech-item"><img src="https://cdn.simpleicons.org/python/3776AB" alt="Python" loading="lazy"><span>Python</span></div>
+      <div class="experience-tech-item"><img src="https://cdn.simpleicons.org/django/44B78B" alt="Django" loading="lazy"><span>Django</span></div>
+      <div class="experience-tech-item"><img src="https://cdn.simpleicons.org/flask/FFFFFF" alt="Flask" loading="lazy"><span>Flask</span></div>
+      <div class="experience-tech-item"><img src="https://cdn.simpleicons.org/fastapi/009688" alt="FastAPI" loading="lazy"><span>FastAPI</span></div>
+      <div class="experience-tech-item"><img src="https://cdn.simpleicons.org/postgresql/4169E1" alt="PostgreSQL" loading="lazy"><span>PostgreSQL</span></div>
+      <div class="experience-tech-item"><img src="https://cdn.simpleicons.org/mysql/4479A1" alt="MySQL" loading="lazy"><span>MySQL</span></div>
+      <div class="experience-tech-item"><img src="https://cdn.simpleicons.org/git/F05032" alt="Git" loading="lazy"><span>Git</span></div>
+    </div>`;
+  body.appendChild(stack);
 }
