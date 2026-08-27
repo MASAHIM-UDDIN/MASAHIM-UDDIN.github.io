@@ -234,7 +234,6 @@ function initSkillsIcons() {
     img.src = icon[0];
     img.alt = icon[1];
     img.loading = 'lazy';
-    img.setAttribute('aria-hidden', 'true');
     label.prepend(img);
   });
 }
