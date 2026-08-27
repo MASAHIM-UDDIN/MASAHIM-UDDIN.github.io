@@ -15,6 +15,7 @@ function startApp() {
   initCodeWindowInteractions();
   initTypewriterSwapper();
   initExperienceTechStack();
+  initSkillsIcons();
 }
 
 if (document.readyState === 'loading') {
@@ -186,4 +187,54 @@ function initExperienceTechStack() {
       <div class="experience-tech-item"><img src="https://cdn.simpleicons.org/git/F05032" alt="Git" loading="lazy"><span>Git</span></div>
     </div>`;
   body.appendChild(stack);
+}
+
+function initSkillsIcons() {
+  if (document.querySelector('.skills-icon-style')) return;
+
+  const iconMap = {
+    'Python': ['https://cdn.simpleicons.org/python/3776AB', 'Python'],
+    'JavaScript': ['https://cdn.simpleicons.org/javascript/F7DF1E', 'JavaScript'],
+    'HTML': ['https://cdn.simpleicons.org/html5/E34F26', 'HTML5'],
+    'CSS': ['https://cdn.simpleicons.org/css/1572B6', 'CSS3'],
+    'Python Backend Dev': ['https://cdn.simpleicons.org/python/3776AB', 'Python'],
+    'REST APIs': ['https://cdn.simpleicons.org/fastapi/009688', 'REST APIs'],
+    'Authentication': ['https://cdn.simpleicons.org/letsencrypt/FFFFFF', 'Authentication'],
+    'Server-side Development': ['https://cdn.simpleicons.org/django/44B78B', 'Server-side Development'],
+    'SQL': ['https://cdn.simpleicons.org/mysql/4479A1', 'SQL'],
+    'Database Design': ['https://cdn.simpleicons.org/postgresql/4169E1', 'Database Design'],
+    'Data Handling': ['https://cdn.simpleicons.org/pandas/150458', 'Data Handling'],
+    'Git': ['https://cdn.simpleicons.org/git/F05032', 'Git'],
+    'GitHub': ['https://cdn.simpleicons.org/github/FFFFFF', 'GitHub'],
+    'VS Code': ['https://cdn.simpleicons.org/visualstudiocode/007ACC', 'VS Code'],
+    'Linux': ['https://cdn.simpleicons.org/linux/FCC624', 'Linux']
+  };
+
+  const style = document.createElement('style');
+  style.className = 'skills-icon-style';
+  style.textContent = `
+    .skill-item{justify-content:flex-start;gap:10px}
+    .skill-item > span:first-child{display:inline-flex;align-items:center;gap:10px;min-width:0;flex:1}
+    .skill-item .skill-tech-icon{width:18px;height:18px;object-fit:contain;flex:0 0 18px;filter:drop-shadow(0 0 8px rgba(139,92,246,.12));transition:transform var(--transition-fast)}
+    .skill-item:hover .skill-tech-icon{transform:scale(1.12)}
+    .skill-item .skill-indicator{margin-left:auto;flex:0 0 7px}
+    @media(max-width:480px){.skill-item .skill-tech-icon{width:17px;height:17px;flex-basis:17px}.skill-item{gap:8px}}
+  `;
+  document.head.appendChild(style);
+
+  document.querySelectorAll('.skill-item').forEach(item => {
+    if (item.querySelector('.skill-tech-icon')) return;
+    const label = item.querySelector('span:first-child');
+    if (!label) return;
+    const name = label.textContent.trim();
+    const icon = iconMap[name];
+    if (!icon) return;
+    const img = document.createElement('img');
+    img.className = 'skill-tech-icon';
+    img.src = icon[0];
+    img.alt = icon[1];
+    img.loading = 'lazy';
+    img.setAttribute('aria-hidden', 'true');
+    label.prepend(img);
+  });
 }
